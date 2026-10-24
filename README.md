@@ -2,12 +2,12 @@
 
 This app is for students who want to keep a weekly habit, like studying, reading, or drinking water. You add the habit, check in on the days you do it, and look back at the history. It works with no internet.
 
-Team: Abubeker Mohammed and Jalen Artis
+Team: Abubeker Mohammed (github.com/abubekerm1) and Jalen Artis (github.com/jaiix2)
 Class: Mobile Application Development, Project 1, undergraduate, Fall 2026
 
 Planned work from our proposal:
 - Abubeker Mohammed: Home, Add/Edit, SQLite, and the proposal
-- Jalen Artis: Check-In, History, Settings, and the goal helper
+- Jalen Artis (github.com/jaiix2): Check-In, History, Settings, and the goal helper
 - Both of us: testing, docs, and the final submission
 
 ## What the app does
