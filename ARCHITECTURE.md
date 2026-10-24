@@ -1,26 +1,26 @@
 # Architecture
 
-I kept this small on purpose. The app is one offline tracker, so I did not add a state package.
+I kept this small. The app is one offline tracker, so I did not add a big state package.
 
 ## How the pieces talk
-- Screens in `lib/screens` draw the pages and call the database.
-- `DatabaseHelper` owns the SQLite connection. Widgets do not open the database themselves.
-- `SettingsStore` is a ChangeNotifier for the name and dark mode. `main.dart` listens and rebuilds the theme.
-- `goal_helper.dart` is plain Dart. It does not import Flutter. The form only shows what the function returns.
-- `HabitTile` and `SuggestionCard` are stateless. The form and the check-in page keep the changing values in a State object.
+- The screens in `lib/screens` draw the pages and call the database.
+- `DatabaseHelper` keep the SQLite connection. The widgets do not open the database themselves.
+- `SettingsStore` hold the name and dark mode. `main.dart` listen to it and change the theme.
+- `goal_helper.dart` is plain Dart. It do not import Flutter. The form just show what the function return.
+- `HabitTile` and `SuggestionCard` only display things. The form and the check-in page keep the values that change.
 
-I used setState for the screens. ChangeNotifier was enough for the theme. Provider would be extra for this size.
+I used setState on the screens. ChangeNotifier was enough for the theme. I did not use Provider because the app is small.
 
 ## Why two tables
-A habit is the thing you plan. A check-in is one day of doing it. One habit has many check-ins. The link is `habit_id`.
+A habit is what you plan. A check-in is one day of doing it. One habit can have many check-ins. The link is `habit_id`.
 
-`is_active` means the week is running. Finish week turns it off but leaves the old check-ins. Reset deletes only the last 7 days for that habit and turns the week back on.
+`is_active` mean the week is running. Finish week turn it off but leave the old check-ins. Reset delete only the last 7 days for that habit and turn the week back on.
 
 ## Delete rule
-Deleting a habit deletes its check-ins too. The table says `ON DELETE CASCADE`, and `deleteHabit` also deletes the child rows inside a transaction. I did both so a missed foreign-key setting does not leave orphan check-ins.
+If you delete a habit, its check-ins go too. The table say `ON DELETE CASCADE`, and `deleteHabit` also delete the check-in rows in the same step. I did both so old check-ins do not get left behind.
 
 ## What stays where
 SQLite: habits and check-ins.
-SharedPreferences: display name, dark mode, and the flag that samples were already added.
+SharedPreferences: display name, dark mode, and the flag that the sample habits were already added.
 
-Build files and the database file are not something we commit as app data. The phone creates the database on first launch.
+The phone create the database the first time you open the app.
