@@ -44,7 +44,7 @@ GitHub: https://github.com/abubekerm1/habit_mastery_league
 
 ClickUp board: https://app.clickup.com/90141776119/v/b/2kydwp7q-414
 
-ClickUp evidence file: `Kanban_Contribution_Evidence.pdf` in this same folder. That PDF is not in the repo yet. It still needs the dated board pictures.
+ClickUp evidence file: `Kanban_Contribution_Evidence.pdf` in this same folder. It has the October 16 planning pictures. We do not have separate pictures for October 20, October 23, or October 27, and the file says that.
 
 ## Data on the phone
 SQLite file: `habit_league.db`
