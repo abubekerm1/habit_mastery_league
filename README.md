@@ -27,7 +27,7 @@ Planned work from our proposal:
 Bottom menu is Home, Check-In, History, and Settings.
 
 ## How to run it
-We used Flutter 3.47.3.
+We used Flutter 3.47.3. This project is Android only.
 
 ```bash
 flutter pub get
@@ -35,9 +35,16 @@ flutter test
 flutter run
 ```
 
-For Android I use the Pixel 7 emulator. I open Android Studio to start that emulator, then I close Android Studio and leave the emulator up. My laptop only has 8 GB of RAM, so Studio and the emulator together make it freeze.
+Plug in an Android phone and turn on USB debugging. Pick that phone when Flutter asks. Open this folder in VS Code to edit the Dart files.
 
-Open the project folder in VS Code when you want to edit the Dart files.
+Packages: sqflite, path, path_provider, and shared_preferences. The database shape is in the next section.
+
+## Links the class asked for
+GitHub: https://github.com/abubekerm1/habit_mastery_league
+
+ClickUp board: https://app.clickup.com/90141776119/v/b/2kydwp7q-414
+
+ClickUp evidence file: `Kanban_Contribution_Evidence.pdf` in this same folder. That PDF is not in the repo yet. It still needs the dated board pictures.
 
 ## Data on the phone
 SQLite file: `habit_league.db`
@@ -74,6 +81,9 @@ The switch is on the Settings screen. I turned it on from the phone, and it stay
 ## Known limits
 - A week is the last 7 days, not Monday to Sunday.
 - One or two check-ins can make the suggestion jump up too fast. The card says when that happens.
+
+## Later
+A phone reminder for a habit would help. We did not add that yet.
 
 ## License
 School project for our team. Please do not turn this in as your own work.
