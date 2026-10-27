@@ -64,8 +64,13 @@ class _HabitFormScreenState extends State<HabitFormScreen> {
     }
   }
 
-  GoalSuggestion get _suggestion =>
-      suggestNextGoal(currentGoal: _goal.round(), recentCompleted: _recent);
+  // The suggestion is based on the saved goal, not the slider.
+  // If it used the slider, tapping Apply would change the suggestion again
+  // and the user could keep tapping Apply to push the goal higher.
+  GoalSuggestion get _suggestion => suggestNextGoal(
+    currentGoal: widget.habit?.weeklyGoal ?? _goal.round(),
+    recentCompleted: _recent,
+  );
 
   void _apply(GoalSuggestion tip) {
     // Apply only moves the slider. Save is a separate button on purpose.
