@@ -122,6 +122,7 @@ class _AppShellState extends State<AppShell> {
       CheckInScreen(
         reloadToken: _reloadToken,
         selectedHabitId: _checkInHabitId,
+        onHabitChanged: (habitId) => _checkInHabitId = habitId,
       ),
       HistoryScreen(reloadToken: _reloadToken),
       const SettingsScreen(),
