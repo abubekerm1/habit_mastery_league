@@ -66,52 +66,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
   }
 
   Future<void> _edit(CheckIn item) async {
-    final noteController = TextEditingController(text: item.note);
-    var completed = item.didIt;
-
-    final saved = await showDialog<bool>(
+    final result = await showDialog<_EditCheckInResult>(
       context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setLocal) {
-            return AlertDialog(
-              title: const Text('Edit check-in'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CheckboxListTile(
-                    contentPadding: EdgeInsets.zero,
-                    value: completed,
-                    title: const Text('Completed'),
-                    onChanged: (value) =>
-                        setLocal(() => completed = value ?? false),
-                  ),
-                  TextField(
-                    controller: noteController,
-                    maxLength: 120,
-                    decoration: const InputDecoration(labelText: 'Note'),
-                  ),
-                ],
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
-                ),
-                FilledButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Save'),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      builder: (context) => _EditCheckInDialog(item: item),
     );
 
-    final note = noteController.text.trim();
-    noteController.dispose();
-    if (saved != true || !mounted) return;
+    if (result == null || !mounted) return;
+
+    final note = result.note;
+
     if (note.length > 120) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -123,7 +86,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     try {
       await DatabaseHelper.instance.saveCheckIn(
-        item.copyWith(completed: completed ? 1 : 0, note: note),
+        item.copyWith(completed: result.completed ? 1 : 0, note: note),
       );
       await _load();
     } catch (error) {
@@ -290,6 +253,87 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     );
                   },
                 ),
+        ),
+      ],
+    );
+  }
+}
+
+// Stores the values returned when the user saves the edit dialog.
+class _EditCheckInResult {
+  final bool completed;
+  final String note;
+
+  _EditCheckInResult({required this.completed, required this.note});
+}
+
+// This widget manages its own text controller.
+class _EditCheckInDialog extends StatefulWidget {
+  const _EditCheckInDialog({required this.item});
+
+  final CheckIn item;
+
+  @override
+  State<_EditCheckInDialog> createState() => _EditCheckInDialogState();
+}
+
+class _EditCheckInDialogState extends State<_EditCheckInDialog> {
+  late TextEditingController _noteController;
+  late bool _completed;
+
+  @override
+  void initState() {
+    super.initState();
+    _noteController = TextEditingController(text: widget.item.note);
+    _completed = widget.item.didIt;
+  }
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Edit check-in'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CheckboxListTile(
+            contentPadding: EdgeInsets.zero,
+            value: _completed,
+            title: const Text('Completed'),
+            onChanged: (value) {
+              setState(() {
+                _completed = value ?? false;
+              });
+            },
+          ),
+          TextField(
+            controller: _noteController,
+            maxLength: 120,
+            decoration: const InputDecoration(labelText: 'Note'),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () {
+            Navigator.pop(
+              context,
+              _EditCheckInResult(
+                completed: _completed,
+                note: _noteController.text.trim(),
+              ),
+            );
+          },
+          child: const Text('Save'),
         ),
       ],
     );
