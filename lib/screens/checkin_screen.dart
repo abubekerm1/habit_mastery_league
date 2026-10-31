@@ -10,10 +10,12 @@ class CheckInScreen extends StatefulWidget {
     super.key,
     required this.reloadToken,
     this.selectedHabitId,
+    this.onHabitChanged,
   });
 
   final int reloadToken;
   final int? selectedHabitId;
+  final ValueChanged<int>? onHabitChanged;
 
   @override
   State<CheckInScreen> createState() => _CheckInScreenState();
@@ -320,7 +322,9 @@ class _CheckInScreenState extends State<CheckInScreen> {
                   DropdownMenuItem(value: item.id, child: Text(item.name)),
               ],
               onChanged: (value) {
+                if (value == null) return;
                 setState(() => _habitId = value);
+                widget.onHabitChanged?.call(value);
                 _lookupExisting();
               },
             ),
@@ -347,6 +351,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
         ),
         TextField(
           controller: _noteController,
+          maxLength: 120,
           maxLines: 2,
           decoration: const InputDecoration(
             labelText: 'Note (optional)',

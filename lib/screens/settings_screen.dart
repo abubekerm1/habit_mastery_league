@@ -60,6 +60,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         const SizedBox(height: 16),
         TextField(
           controller: _nameController,
+          maxLength: 30,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(
             labelText: 'Your name',

@@ -88,6 +88,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   TextField(
                     controller: noteController,
+                    maxLength: 120,
                     decoration: const InputDecoration(labelText: 'Note'),
                   ),
                 ],
